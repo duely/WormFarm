@@ -65,6 +65,7 @@ public class TileEntityWormFarm extends TileEntity {
         nbt.setInteger("tickingSoil", tickingSoil);
         nbt.setInteger("tickingOrganic", tickingOrganic);
         nbt.setFloat("currentModifier", currentModifier);
+        return nbt;
     }
 
     @Override
