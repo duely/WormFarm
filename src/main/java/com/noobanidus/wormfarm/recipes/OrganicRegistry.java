@@ -1,12 +1,32 @@
 package com.noobanidus.wormfarm.recipes;
 
+import com.noobanidus.wormfarm.WormFarm;
 import net.minecraft.item.ItemStack;
 
-public class OrganicRegistry extends Registry<ItemRegistryEntry> {
-    public static OrganicRegistry instance = new OrganicRegistry();
+public class OrganicRegistry extends Registry<OrganicRegistry.OrganicEntry> {
+    private static OrganicRegistry instance = new OrganicRegistry();
+
+    public static OrganicRegistry getInstance() {
+        return instance;
+    }
 
     public OrganicEntry getEmpty() {
         return OrganicEntry.EMPTY;
+    }
+
+    @Override
+    public void addEntry (OrganicEntry entry) {
+        if (findEntry(entry.getStack()) != OrganicEntry.EMPTY) {
+            WormFarm.LOG.warn(String.format("Attempted to register a duplicate organic item registry for item: %s", entry.getStack().getDisplayName()));
+        } else {
+            super.addEntry(entry);
+        }
+    }
+
+    public OrganicEntry addEntry(ItemStack stack, String humidity, int burnTime, float matchModifier, float conflictModifier) {
+        OrganicEntry entry = new OrganicEntry(stack, humidity, burnTime, matchModifier, conflictModifier);
+        addEntry(entry);
+        return entry;
     }
 
     public static class OrganicEntry extends ItemRegistryEntry {
@@ -14,6 +34,10 @@ public class OrganicRegistry extends Registry<ItemRegistryEntry> {
 
         OrganicEntry(ItemStack stack, String humidity, int burnTime, float matchModifier, float conflictModifier) {
             super(stack, humidity, burnTime, matchModifier, conflictModifier, "organic");
+        }
+
+        public HumidityRegistry.MatchType matchType (SoilRegistry.SoilEntry entry) {
+            return HumidityRegistry.getInstance().matchType(entry, this);
         }
     }
 }

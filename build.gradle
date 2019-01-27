@@ -13,6 +13,14 @@ version = "1.0.0"
 group = "com.noobanidus.wormfarm"
 archivesBaseName = "wormfarm"
 
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // Load config.  It shall from now be referenced as simply config or project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
 sourceCompatibility = targetCompatibility = "1.8"
 
 compileJava {

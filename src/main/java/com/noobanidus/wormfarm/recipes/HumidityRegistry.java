@@ -1,5 +1,6 @@
 package com.noobanidus.wormfarm.recipes;
 
+import com.noobanidus.wormfarm.WormFarm;
 import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.item.ItemStack;
 
@@ -9,10 +10,50 @@ import java.util.List;
 import java.util.Set;
 
 public class HumidityRegistry extends Registry<HumidityRegistry.HumidityEntry> {
-    public static HumidityRegistry instance = new HumidityRegistry();
+    private static HumidityRegistry instance = new HumidityRegistry();
+
+    public static HumidityRegistry getInstance() {
+        return instance;
+    }
 
     public HumidityEntry getEmpty() {
         return HumidityEntry.EMPTY;
+    }
+
+    @Override
+    public void addEntry (HumidityEntry entry) {
+        if (findEntry(entry.getHumidity()) != HumidityEntry.EMPTY) {
+            WormFarm.LOG.warn(String.format("Attempted to register a duplicate humidity entry: %s", entry.getHumidity()));
+        } else {
+            super.addEntry(entry);
+        }
+    }
+
+    public HumidityEntry addEntry (String humidity, int burnTime, float matchModifier, float conflictModifier) {
+        HumidityEntry entry = new HumidityEntry(humidity, burnTime, matchModifier, conflictModifier);
+        addEntry(entry);
+        return entry;
+    }
+
+    public MatchType matchType (SoilRegistry.SoilEntry soil, OrganicRegistry.OrganicEntry organic) {
+        HumidityEntry soilEntry = instance.findEntry(soil.getHumidity());
+        HumidityEntry organicEntry = instance.findEntry(organic.getHumidity());
+
+        return soilEntry.matchType(organicEntry);
+    }
+
+    // Probably unneeded
+    public MatchType matchType (ItemStack soil, ItemStack organic) {
+        SoilRegistry.SoilEntry soilEntry = SoilRegistry.getInstance().findEntry(soil);
+        if (soilEntry == SoilRegistry.SoilEntry.EMPTY) return MatchType.INVALID;
+
+        OrganicRegistry.OrganicEntry organicEntry = OrganicRegistry.getInstance().findEntry(organic);
+        if (organicEntry == OrganicRegistry.OrganicEntry.EMPTY) return MatchType.INVALID;
+
+        HumidityEntry a = instance.findEntry(soilEntry.getHumidity());
+        HumidityEntry b = instance.findEntry(organicEntry.getHumidity());
+
+        return a.matchType(b);
     }
 
     public static class HumidityEntry extends RegistryEntry {
@@ -105,5 +146,33 @@ public class HumidityRegistry extends Registry<HumidityRegistry.HumidityEntry> {
         public boolean compareString(String string) {
             return false;
         }
+
+        public MatchType matchType (HumidityEntry otherEntry) {
+            if (this == HumidityEntry.EMPTY || otherEntry == HumidityEntry.EMPTY) return MatchType.INVALID;
+
+            if (this.getMatches().contains(otherEntry)) return MatchType.MATCH;
+
+            if (this.getConflicts().contains(otherEntry)) return MatchType.CONFLICT;
+
+            return MatchType.NEUTRAL;
+        }
+    }
+
+    public enum MatchType {
+        INVALID("invalid"),
+        CONFLICT("conflict"),
+        NEUTRAL("neutral"),
+        MATCH("match");
+
+        private String key;
+
+        MatchType (String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return key;
+        }
     }
 }
+

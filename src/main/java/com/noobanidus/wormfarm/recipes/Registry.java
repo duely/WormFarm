@@ -1,5 +1,6 @@
 package com.noobanidus.wormfarm.recipes;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 public abstract class Registry<T extends RegistryEntry> {
     private List<T> registry = new ArrayList<>();
 
-    public List<T> getRegistry() {
-        return registry;
+    public List<T> getRegistryCopy() {
+        return ImmutableList.copyOf(registry);
     }
 
     public T findEntry(ItemStack stack) {

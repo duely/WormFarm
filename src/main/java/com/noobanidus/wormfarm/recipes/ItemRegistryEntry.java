@@ -13,6 +13,22 @@ public abstract class ItemRegistryEntry extends RegistryEntry {
         this.humidity = humidity;
     }
 
+    public ItemStack getStack() {
+        return stack;
+    }
+
+    public void setStack(ItemStack stack) {
+        this.stack = stack;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
     public boolean compareStack(ItemStack otherStack) {
         return NBTComparisonUtil.StackMatch(otherStack, stack, true, false);
     }
