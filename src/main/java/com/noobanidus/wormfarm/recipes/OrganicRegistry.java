@@ -14,6 +14,14 @@ public class OrganicRegistry extends Registry<OrganicRegistry.OrganicEntry> {
         return OrganicEntry.EMPTY;
     }
 
+    public void replaceEntry (OrganicEntry entry) {
+        if (removeEntry(entry.getStack())) {
+            addEntry(entry);
+        } else {
+            WormFarm.LOG.warn(String.format("Tried to modify a humidity entry `%s` but it didn't previously exist.", entry.getStack().getDisplayName()));
+        }
+    }
+
     @Override
     public void addEntry (OrganicEntry entry) {
         if (findEntry(entry.getStack()) != OrganicEntry.EMPTY) {

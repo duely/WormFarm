@@ -3,7 +3,7 @@ package com.noobanidus.wormfarm.recipes;
 import com.noobanidus.wormfarm.util.NBTComparisonUtil;
 import net.minecraft.item.ItemStack;
 
-public abstract class ItemRegistryEntry extends RegistryEntry {
+public abstract class ItemRegistryEntry extends Registry.RegistryEntry {
     private ItemStack stack;
     private String humidity;
 

@@ -14,6 +14,14 @@ public class SoilRegistry extends Registry<SoilRegistry.SoilEntry> {
         return SoilEntry.EMPTY;
     }
 
+    public void replaceEntry (SoilEntry entry) {
+        if (removeEntry(entry.getStack())) {
+            addEntry(entry);
+        } else {
+            WormFarm.LOG.warn(String.format("Tried to modify a humidity entry `%s` but it didn't previously exist.", entry.getStack().getDisplayName()));
+        }
+    }
+
     @Override
     public void addEntry (SoilEntry entry) {
         if (findEntry(entry.getStack()) != SoilEntry.EMPTY) {

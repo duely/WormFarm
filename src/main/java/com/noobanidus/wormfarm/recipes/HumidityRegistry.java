@@ -29,6 +29,14 @@ public class HumidityRegistry extends Registry<HumidityRegistry.HumidityEntry> {
         }
     }
 
+    public void replaceEntry (HumidityEntry entry) {
+        if (removeEntry(entry.getHumidity())) {
+            addEntry(entry);
+        } else {
+            WormFarm.LOG.warn(String.format("Tried to modify a humidity entry `%s` but it didn't previously exist.", entry.getHumidity()));
+        }
+    }
+
     public HumidityEntry addEntry (String humidity, int burnTime, float matchModifier, float conflictModifier) {
         HumidityEntry entry = new HumidityEntry(humidity, burnTime, matchModifier, conflictModifier);
         addEntry(entry);
@@ -56,7 +64,7 @@ public class HumidityRegistry extends Registry<HumidityRegistry.HumidityEntry> {
         return a.matchType(b);
     }
 
-    public static class HumidityEntry extends RegistryEntry {
+    public static class HumidityEntry extends Registry.RegistryEntry {
         public final static HumidityEntry EMPTY = new HumidityEntry("", -1, -1, -1);
         // This is probably overkill
         private final Set<String> matches = new ConcurrentSet<>();
