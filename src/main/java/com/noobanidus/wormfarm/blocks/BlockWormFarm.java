@@ -1,6 +1,8 @@
 package com.noobanidus.wormfarm.blocks;
 
 import com.noobanidus.wormfarm.WormFarm;
+import com.noobanidus.wormfarm.config.Registrar;
+import com.noobanidus.wormfarm.tiles.TileEntityWormFarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.ITileEntityProvider;
@@ -27,6 +29,8 @@ public class BlockWormFarm extends Block implements ITileEntityProvider  {
         setRegistryName(new ResourceLocation(WormFarm.MODID, "wormfarm"));
         setHardness(2.0F);
         setSoundType(SoundType.WOOD);
+
+        Registrar.addBlock(this);
     }
 
     @Override
@@ -36,7 +40,7 @@ public class BlockWormFarm extends Block implements ITileEntityProvider  {
 
     @Override
     public TileEntity createNewTileEntity (@Nonnull World world, int meta) {
-        return null;
+        return new TileEntityWormFarm();
     }
 
     @Override
@@ -63,5 +67,4 @@ public class BlockWormFarm extends Block implements ITileEntityProvider  {
     public BlockRenderLayer getRenderLayer () {
         return BlockRenderLayer.CUTOUT;
     }
-
 }

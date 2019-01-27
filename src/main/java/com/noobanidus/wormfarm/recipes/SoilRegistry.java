@@ -47,5 +47,9 @@ public class SoilRegistry extends Registry<SoilRegistry.SoilEntry> {
         public HumidityRegistry.MatchType matchType (OrganicRegistry.OrganicEntry entry) {
             return HumidityRegistry.getInstance().matchType(this, entry);
         }
+
+        public boolean isEmpty () {
+            return this == EMPTY;
+        }
     }
 }

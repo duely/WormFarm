@@ -104,6 +104,8 @@ public abstract class Registry<T extends Registry.RegistryEntry> {
 
         public abstract boolean compareStack(ItemStack stack);
 
+        public abstract boolean isEmpty ();
+
         public abstract boolean compareString(String string);
     }
 }

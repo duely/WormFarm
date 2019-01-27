@@ -164,6 +164,10 @@ public class HumidityRegistry extends Registry<HumidityRegistry.HumidityEntry> {
 
             return MatchType.NEUTRAL;
         }
+
+        public boolean isEmpty () {
+            return this == EMPTY;
+        }
     }
 
     public enum MatchType {
