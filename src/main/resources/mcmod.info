@@ -1,0 +1,21 @@
+[
+  {
+    "modid": "wormfarm",
+    "name": "Worm Farm",
+    "description": "Combine dirt and organic materials to breed useful worms and compost!",
+    "version": "${version}",
+    "credits": "Noobanidus",
+    "logoFile": "assets/wormfarm/textures/logo.png",
+    "mcversion": "${mc_version}",
+    "url": "http://github.com/duely/WormFarm",
+    "updateUrl": "",
+    "authorList": [
+      "Noobanidus"
+    ],
+    "parent": "",
+    "screenshots": [],
+    "dependencies": [
+      "forge"
+    ]
+  }
+]
