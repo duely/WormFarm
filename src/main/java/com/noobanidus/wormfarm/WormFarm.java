@@ -1,5 +1,6 @@
 package com.noobanidus.wormfarm;
 
+import com.noobanidus.wormfarm.client.GuiHandler;
 import com.noobanidus.wormfarm.config.CreativeTabWF;
 import com.noobanidus.wormfarm.proxy.ISidedProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +23,8 @@ public class WormFarm {
     public final static Logger LOG = LogManager.getLogger(MODID);
 
     public static CreativeTabWF TAB;
+
+    public static GuiHandler GUI = new GuiHandler();
 
     @SidedProxy(clientSide = "com.noobanidus.wormfarm.proxy.ClientProxy", serverSide = "com.noobanidus.wormfarm.proxy.CommonProxy")
     public static ISidedProxy proxy;

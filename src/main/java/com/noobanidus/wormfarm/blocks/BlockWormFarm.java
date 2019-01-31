@@ -1,6 +1,7 @@
 package com.noobanidus.wormfarm.blocks;
 
 import com.noobanidus.wormfarm.WormFarm;
+import com.noobanidus.wormfarm.client.GuiHandler;
 import com.noobanidus.wormfarm.config.Registrar;
 import com.noobanidus.wormfarm.tiles.TileEntityWormFarm;
 import net.minecraft.block.Block;
@@ -35,8 +36,17 @@ public class BlockWormFarm extends Block implements ITileEntityProvider  {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)   {
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileEntityWormFarm) {
+            player.openGui(WormFarm.instance, GuiHandler.WORM_FARM, world, pos.getX(), pos.getY(), pos.getZ());
+
+            return true;
+        }
+
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
+
+    // TODO: Bounding box
 
     @Override
     public TileEntity createNewTileEntity (@Nonnull World world, int meta) {
